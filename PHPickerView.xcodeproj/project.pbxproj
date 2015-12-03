@@ -1,0 +1,519 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FE30150B1C109C19008169D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FE30150A1C109C19008169D6 /* main.m */; };
+		FE30150E1C109C19008169D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE30150D1C109C19008169D6 /* AppDelegate.m */; };
+		FE3015111C109C19008169D6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3015101C109C19008169D6 /* ViewController.m */; };
+		FE3015141C109C19008169D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE3015121C109C19008169D6 /* Main.storyboard */; };
+		FE3015161C109C19008169D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE3015151C109C19008169D6 /* Assets.xcassets */; };
+		FE3015191C109C19008169D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE3015171C109C19008169D6 /* LaunchScreen.storyboard */; };
+		FE3015241C109C19008169D6 /* PHPickerViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3015231C109C19008169D6 /* PHPickerViewTests.m */; };
+		FE30152F1C109C19008169D6 /* PHPickerViewUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = FE30152E1C109C19008169D6 /* PHPickerViewUITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FE3015201C109C19008169D6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE3014FE1C109C18008169D6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FE3015051C109C19008169D6;
+			remoteInfo = PHPickerView;
+		};
+		FE30152B1C109C19008169D6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE3014FE1C109C18008169D6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FE3015051C109C19008169D6;
+			remoteInfo = PHPickerView;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		FE3015061C109C19008169D6 /* PHPickerView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PHPickerView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE30150A1C109C19008169D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FE30150C1C109C19008169D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		FE30150D1C109C19008169D6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		FE30150F1C109C19008169D6 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		FE3015101C109C19008169D6 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		FE3015131C109C19008169D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FE3015151C109C19008169D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FE3015181C109C19008169D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FE30151A1C109C19008169D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FE30151F1C109C19008169D6 /* PHPickerViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PHPickerViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE3015231C109C19008169D6 /* PHPickerViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHPickerViewTests.m; sourceTree = "<group>"; };
+		FE3015251C109C19008169D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FE30152A1C109C19008169D6 /* PHPickerViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PHPickerViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE30152E1C109C19008169D6 /* PHPickerViewUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHPickerViewUITests.m; sourceTree = "<group>"; };
+		FE3015301C109C19008169D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FE3015031C109C19008169D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE30151C1C109C19008169D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE3015271C109C19008169D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FE3014FD1C109C18008169D6 = {
+			isa = PBXGroup;
+			children = (
+				FE3015081C109C19008169D6 /* PHPickerView */,
+				FE3015221C109C19008169D6 /* PHPickerViewTests */,
+				FE30152D1C109C19008169D6 /* PHPickerViewUITests */,
+				FE3015071C109C19008169D6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FE3015071C109C19008169D6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE3015061C109C19008169D6 /* PHPickerView.app */,
+				FE30151F1C109C19008169D6 /* PHPickerViewTests.xctest */,
+				FE30152A1C109C19008169D6 /* PHPickerViewUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FE3015081C109C19008169D6 /* PHPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				FE30150C1C109C19008169D6 /* AppDelegate.h */,
+				FE30150D1C109C19008169D6 /* AppDelegate.m */,
+				FE30150F1C109C19008169D6 /* ViewController.h */,
+				FE3015101C109C19008169D6 /* ViewController.m */,
+				FE3015121C109C19008169D6 /* Main.storyboard */,
+				FE3015151C109C19008169D6 /* Assets.xcassets */,
+				FE3015171C109C19008169D6 /* LaunchScreen.storyboard */,
+				FE30151A1C109C19008169D6 /* Info.plist */,
+				FE3015091C109C19008169D6 /* Supporting Files */,
+			);
+			path = PHPickerView;
+			sourceTree = "<group>";
+		};
+		FE3015091C109C19008169D6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FE30150A1C109C19008169D6 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FE3015221C109C19008169D6 /* PHPickerViewTests */ = {
+			isa = PBXGroup;
+			children = (
+				FE3015231C109C19008169D6 /* PHPickerViewTests.m */,
+				FE3015251C109C19008169D6 /* Info.plist */,
+			);
+			path = PHPickerViewTests;
+			sourceTree = "<group>";
+		};
+		FE30152D1C109C19008169D6 /* PHPickerViewUITests */ = {
+			isa = PBXGroup;
+			children = (
+				FE30152E1C109C19008169D6 /* PHPickerViewUITests.m */,
+				FE3015301C109C19008169D6 /* Info.plist */,
+			);
+			path = PHPickerViewUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FE3015051C109C19008169D6 /* PHPickerView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE3015331C109C19008169D6 /* Build configuration list for PBXNativeTarget "PHPickerView" */;
+			buildPhases = (
+				FE3015021C109C19008169D6 /* Sources */,
+				FE3015031C109C19008169D6 /* Frameworks */,
+				FE3015041C109C19008169D6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PHPickerView;
+			productName = PHPickerView;
+			productReference = FE3015061C109C19008169D6 /* PHPickerView.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FE30151E1C109C19008169D6 /* PHPickerViewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE3015361C109C19008169D6 /* Build configuration list for PBXNativeTarget "PHPickerViewTests" */;
+			buildPhases = (
+				FE30151B1C109C19008169D6 /* Sources */,
+				FE30151C1C109C19008169D6 /* Frameworks */,
+				FE30151D1C109C19008169D6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FE3015211C109C19008169D6 /* PBXTargetDependency */,
+			);
+			name = PHPickerViewTests;
+			productName = PHPickerViewTests;
+			productReference = FE30151F1C109C19008169D6 /* PHPickerViewTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		FE3015291C109C19008169D6 /* PHPickerViewUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE3015391C109C19008169D6 /* Build configuration list for PBXNativeTarget "PHPickerViewUITests" */;
+			buildPhases = (
+				FE3015261C109C19008169D6 /* Sources */,
+				FE3015271C109C19008169D6 /* Frameworks */,
+				FE3015281C109C19008169D6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FE30152C1C109C19008169D6 /* PBXTargetDependency */,
+			);
+			name = PHPickerViewUITests;
+			productName = PHPickerViewUITests;
+			productReference = FE30152A1C109C19008169D6 /* PHPickerViewUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FE3014FE1C109C18008169D6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "A&A.make LTD";
+				TargetAttributes = {
+					FE3015051C109C19008169D6 = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+					FE30151E1C109C19008169D6 = {
+						CreatedOnToolsVersion = 7.0.1;
+						TestTargetID = FE3015051C109C19008169D6;
+					};
+					FE3015291C109C19008169D6 = {
+						CreatedOnToolsVersion = 7.0.1;
+						TestTargetID = FE3015051C109C19008169D6;
+					};
+				};
+			};
+			buildConfigurationList = FE3015011C109C18008169D6 /* Build configuration list for PBXProject "PHPickerView" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FE3014FD1C109C18008169D6;
+			productRefGroup = FE3015071C109C19008169D6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FE3015051C109C19008169D6 /* PHPickerView */,
+				FE30151E1C109C19008169D6 /* PHPickerViewTests */,
+				FE3015291C109C19008169D6 /* PHPickerViewUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FE3015041C109C19008169D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE3015191C109C19008169D6 /* LaunchScreen.storyboard in Resources */,
+				FE3015161C109C19008169D6 /* Assets.xcassets in Resources */,
+				FE3015141C109C19008169D6 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE30151D1C109C19008169D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE3015281C109C19008169D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FE3015021C109C19008169D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE3015111C109C19008169D6 /* ViewController.m in Sources */,
+				FE30150E1C109C19008169D6 /* AppDelegate.m in Sources */,
+				FE30150B1C109C19008169D6 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE30151B1C109C19008169D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE3015241C109C19008169D6 /* PHPickerViewTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE3015261C109C19008169D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE30152F1C109C19008169D6 /* PHPickerViewUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FE3015211C109C19008169D6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FE3015051C109C19008169D6 /* PHPickerView */;
+			targetProxy = FE3015201C109C19008169D6 /* PBXContainerItemProxy */;
+		};
+		FE30152C1C109C19008169D6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FE3015051C109C19008169D6 /* PHPickerView */;
+			targetProxy = FE30152B1C109C19008169D6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FE3015121C109C19008169D6 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE3015131C109C19008169D6 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FE3015171C109C19008169D6 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE3015181C109C19008169D6 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FE3015311C109C19008169D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		FE3015321C109C19008169D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FE3015341C109C19008169D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = PHPickerView/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.AAmake.PHPickerView;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FE3015351C109C19008169D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = PHPickerView/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.AAmake.PHPickerView;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		FE3015371C109C19008169D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = PHPickerViewTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.AAmake.PHPickerViewTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PHPickerView.app/PHPickerView";
+			};
+			name = Debug;
+		};
+		FE3015381C109C19008169D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = PHPickerViewTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.AAmake.PHPickerViewTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PHPickerView.app/PHPickerView";
+			};
+			name = Release;
+		};
+		FE30153A1C109C19008169D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = PHPickerViewUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.AAmake.PHPickerViewUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = PHPickerView;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		FE30153B1C109C19008169D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = PHPickerViewUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.AAmake.PHPickerViewUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = PHPickerView;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FE3015011C109C18008169D6 /* Build configuration list for PBXProject "PHPickerView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE3015311C109C19008169D6 /* Debug */,
+				FE3015321C109C19008169D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE3015331C109C19008169D6 /* Build configuration list for PBXNativeTarget "PHPickerView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE3015341C109C19008169D6 /* Debug */,
+				FE3015351C109C19008169D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		FE3015361C109C19008169D6 /* Build configuration list for PBXNativeTarget "PHPickerViewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE3015371C109C19008169D6 /* Debug */,
+				FE3015381C109C19008169D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		FE3015391C109C19008169D6 /* Build configuration list for PBXNativeTarget "PHPickerViewUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE30153A1C109C19008169D6 /* Debug */,
+				FE30153B1C109C19008169D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FE3014FE1C109C18008169D6 /* Project object */;
+}
