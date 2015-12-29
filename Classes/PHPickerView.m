@@ -41,7 +41,7 @@
 @interface PHPickerView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, PHCollectionViewLayoutDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, copy) NSMutableDictionary *selectedItems;
+@property (nonatomic, strong) NSMutableDictionary *selectedItems;
 @property (nonatomic, strong) PHPickerViewDelegateIntercepter *intercepter;
 - (CGFloat)offsetForItem:(NSUInteger)item;
 - (void)didEndScrolling;
@@ -58,6 +58,7 @@
 
 - (void)initialize
 {
+    self.selectedItems = [NSMutableDictionary new];
     self.font = self.font ?: [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
     self.highlightedFont = self.highlightedFont ?: [UIFont fontWithName:@"HelveticaNeue" size:20];
     self.textColor = self.textColor ?: [UIColor darkGrayColor];
@@ -119,9 +120,18 @@
 {
     [super layoutSubviews];
     self.collectionView.collectionViewLayout = [self collectionViewLayout];
-//    if ([self.dataSource numberOfItemsInPickerView:self]) {
-//        [self scrollToItem:self.selectedItem animated:NO];
-//    }
+    NSUInteger numberOfItems = [self.dataSource numberOfItemsInPickerView:self];
+    if (numberOfItems) {
+        NSArray *sortedKeys = [[self.selectedItems allKeys] sortedArrayUsingSelector: @selector(compare:)];
+        if(sortedKeys.count) {
+            NSString *firstKey = sortedKeys.firstObject;
+            NSAssert([firstKey isKindOfClass:NSString.class], @"Selected items - wrong key class");
+            NSUInteger firstSelectedItem = firstKey.intValue;
+//            NSLog(@"selected keys: %@. \nfirstSelectedItem = %lu", sortedKeys, firstSelectedItem);
+            if(firstSelectedItem < numberOfItems)
+                [self scrollToItem:firstSelectedItem animated:NO];
+        }
+    }
     self.collectionView.layer.mask.frame = self.collectionView.bounds;
 }
 
@@ -299,11 +309,19 @@
 
 - (BOOL)isItemSelected:(NSUInteger)item
 {
-    return [self.selectedItems objectForKey:[NSString stringWithFormat:@"%lu", item]] != nil;
+    NSNumber *value = [self.selectedItems objectForKey:[NSString stringWithFormat:@"%lu", item]];
+    BOOL isSelected = value != nil;
+//    NSLog(@"Is selected: [%lu]%@ ? %i", item, [self.dataSource pickerView:self titleForItem:item], isSelected);
+    return isSelected;
 }
 
 - (void)setItem:(NSUInteger)item selected:(BOOL)selected
 {
+//    NSString *log = @"";
+//    if(selected) log = @"Selecting";
+//    else log = @"Deselecting";
+//    log = [log stringByAppendingString:[NSString stringWithFormat:@" [%lu]%@", item, [self.dataSource pickerView:self titleForItem:item]]];
+//    NSLog(@"%@", log);
     if(self.multipleSelection) {
         if(selected)
             [self.selectedItems setObject:@(YES) forKey:[NSString stringWithFormat:@"%lu", item]];
@@ -411,13 +429,6 @@
 {
     NSString *reuseId = NSStringFromClass([PHPickerCollectionViewCell class]);
 
-    //this is bad, because you need to register class for reuseId before you know appearanceIds...
-//    if([self.dataSource respondsToSelector:@selector(pickerView:roundedButtonAppearanceIdentifierForItem:)]) {
-//        NSString *roundedAppearanceId = [self.dataSource pickerView:self roundedButtonAppearanceIdentifierForItem:indexPath.item];
-//        if(roundedAppearanceId.length)
-//            reuseId = [NSString stringWithFormat:@"%@+%@", reuseId, roundedAppearanceId];
-//    }
-    
     PHPickerCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
     
     NSString *title = nil;
@@ -435,6 +446,25 @@
     cell.useRoundedButton = self.useRoundedButton;
     cell.roundedButtonSize = self.roundedButtonSize;
     
+//*
+    if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)])
+        cell.margin = [self.delegate pickerView:self marginForItem:indexPath.item];
+    else
+        cell.margin = CGSizeZero;
+    
+    if(self.useRoundedButton) {
+        if([self.dataSource respondsToSelector:@selector(pickerView:roundedButtonAppearanceIdentifierForItem:)]) {
+            NSString *roundedAppearanceId = [self.dataSource pickerView:self roundedButtonAppearanceIdentifierForItem:indexPath.item];
+            if(roundedAppearanceId.length) {
+                [cell.roundedButton setAppearanceIdentifier:roundedAppearanceId];
+            }
+        }
+    }
+    
+    [cell layoutSubviews];
+//*/
+
+/*
     if(self.useRoundedButton) {
         if([self.dataSource respondsToSelector:@selector(pickerView:roundedButtonAppearanceIdentifierForItem:)]) {
             NSString *roundedAppearanceId = [self.dataSource pickerView:self roundedButtonAppearanceIdentifierForItem:indexPath.item];
@@ -448,20 +478,14 @@
     } else { // do not use rounded button
         if (title) {
             cell.label.bounds = (CGRect){CGPointZero, [self sizeForString:title]};
-            
-            
-            //fuck the margins
-            if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)]) {
-                CGSize margin = [self.delegate pickerView:self marginForItem:indexPath.item];
-                cell.label.frame = CGRectInset(cell.label.frame, -margin.width, -margin.height);
-            }
         } else {
             cell.label.text = nil;
         }
     }
+*/
     
     cell.selected = [self isItemSelected:indexPath.item]; // (indexPath.item == self.selectedItem);
-    NSLog(@"Cell %lu is selected: %i", indexPath.item, (int)cell.selected);
+    //NSLog(@"Cell %lu is selected: %i", indexPath.item, (int)cell.selected);
     
     if([self.delegate respondsToSelector:@selector(pickerView:configureCell:forItem:)]) {
         [self.delegate pickerView:self configureCell:&cell forItem:indexPath.item];

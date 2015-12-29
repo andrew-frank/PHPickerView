@@ -116,6 +116,8 @@
 {
     [super layoutSubviews];
     
+    self.laidOutSubviews = YES;
+    
     if(self.useRoundedButton == NO) {
         self.roundedButton.frame = CGRectZero;
         self.label.frame = CGRectInset(self.bounds, -self.margin.width, -self.margin.height);
@@ -123,7 +125,7 @@
     } else {
         CGFloat x = self.bounds.size.width/2 - self.roundedButtonSize.width/2;
         CGRect frame = CGRectMake(x, 0, self.roundedButtonSize.width, self.roundedButtonSize.height);
-        frame = CGRectInset(frame, -self.margin.width, -self.margin.height);
+        frame.origin.y += self.margin.height/2;
         self.roundedButton.frame = frame;
         
         frame = CGRectMake(0, self.roundedButton.frame.size.height + self.interitemSpacing, self.bounds.size.width, self.bounds.size.height - self.roundedButton.frame.size.height - self.interitemSpacing);
