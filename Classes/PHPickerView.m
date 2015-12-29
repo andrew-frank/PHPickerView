@@ -120,18 +120,7 @@
 {
     [super layoutSubviews];
     self.collectionView.collectionViewLayout = [self collectionViewLayout];
-    NSUInteger numberOfItems = [self.dataSource numberOfItemsInPickerView:self];
-    if (numberOfItems) {
-        NSArray *sortedKeys = [[self.selectedItems allKeys] sortedArrayUsingSelector: @selector(compare:)];
-        if(sortedKeys.count) {
-            NSString *firstKey = sortedKeys.firstObject;
-            NSAssert([firstKey isKindOfClass:NSString.class], @"Selected items - wrong key class");
-            NSUInteger firstSelectedItem = firstKey.intValue;
-//            NSLog(@"selected keys: %@. \nfirstSelectedItem = %lu", sortedKeys, firstSelectedItem);
-            if(firstSelectedItem < numberOfItems)
-                [self scrollToItem:firstSelectedItem animated:NO];
-        }
-    }
+    [self scrollToFirstSelected];
     self.collectionView.layer.mask.frame = self.collectionView.bounds;
 }
 
@@ -240,9 +229,7 @@
     [self invalidateIntrinsicContentSize];
     [self.collectionView.collectionViewLayout invalidateLayout];
     [self.collectionView reloadData];
-//    if ([self.dataSource numberOfItemsInPickerView:self]) {
-//        [self selectItem:self.selectedItem animated:NO notifySelection:NO];
-//    }
+    [self scrollToFirstSelected];
 }
 
 - (CGFloat)offsetForItem:(NSUInteger)item
@@ -305,23 +292,32 @@
     }
 }
 
+-(void)scrollToFirstSelected
+{
+    NSUInteger numberOfItems = [self.dataSource numberOfItemsInPickerView:self];
+    if (numberOfItems) {
+        NSArray *sortedKeys = [[self.selectedItems allKeys] sortedArrayUsingSelector: @selector(compare:)];
+        if(sortedKeys.count) {
+            NSString *firstKey = sortedKeys.firstObject;
+            NSAssert([firstKey isKindOfClass:NSString.class], @"Selected items - wrong key class");
+            NSUInteger firstSelectedItem = firstKey.intValue;
+            if(firstSelectedItem < numberOfItems)
+                [self scrollToItem:firstSelectedItem animated:NO];
+        }
+    }
+}
+
 //////////
 
 - (BOOL)isItemSelected:(NSUInteger)item
 {
     NSNumber *value = [self.selectedItems objectForKey:[NSString stringWithFormat:@"%lu", item]];
     BOOL isSelected = value != nil;
-//    NSLog(@"Is selected: [%lu]%@ ? %i", item, [self.dataSource pickerView:self titleForItem:item], isSelected);
     return isSelected;
 }
 
 - (void)setItem:(NSUInteger)item selected:(BOOL)selected
 {
-//    NSString *log = @"";
-//    if(selected) log = @"Selecting";
-//    else log = @"Deselecting";
-//    log = [log stringByAppendingString:[NSString stringWithFormat:@" [%lu]%@", item, [self.dataSource pickerView:self titleForItem:item]]];
-//    NSLog(@"%@", log);
     if(self.multipleSelection) {
         if(selected)
             [self.selectedItems setObject:@(YES) forKey:[NSString stringWithFormat:@"%lu", item]];
@@ -369,7 +365,7 @@
 
     [self.collectionView deselectItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0] animated:animated];
     
-    //[self scrollToItem:item animated:animated];
+    [self scrollToItem:item animated:animated];
     
     if (notifySelection && [self.delegate respondsToSelector:@selector(pickerView:didDeselectItem:)])
         [self.delegate pickerView:self didDeselectItem:item];
@@ -446,7 +442,6 @@
     cell.useRoundedButton = self.useRoundedButton;
     cell.roundedButtonSize = self.roundedButtonSize;
     
-//*
     if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)])
         cell.margin = [self.delegate pickerView:self marginForItem:indexPath.item];
     else
@@ -462,30 +457,8 @@
     }
     
     [cell layoutSubviews];
-//*/
-
-/*
-    if(self.useRoundedButton) {
-        if([self.dataSource respondsToSelector:@selector(pickerView:roundedButtonAppearanceIdentifierForItem:)]) {
-            NSString *roundedAppearanceId = [self.dataSource pickerView:self roundedButtonAppearanceIdentifierForItem:indexPath.item];
-            if(roundedAppearanceId.length) {
-                [cell.roundedButton setAppearanceIdentifier:roundedAppearanceId];
-            }
-        }
-        
-        [cell layoutSubviews];
-        
-    } else { // do not use rounded button
-        if (title) {
-            cell.label.bounds = (CGRect){CGPointZero, [self sizeForString:title]};
-        } else {
-            cell.label.text = nil;
-        }
-    }
-*/
     
-    cell.selected = [self isItemSelected:indexPath.item]; // (indexPath.item == self.selectedItem);
-    //NSLog(@"Cell %lu is selected: %i", indexPath.item, (int)cell.selected);
+    cell.selected = [self isItemSelected:indexPath.item];
     
     if([self.delegate respondsToSelector:@selector(pickerView:configureCell:forItem:)]) {
         [self.delegate pickerView:self configureCell:&cell forItem:indexPath.item];
@@ -574,11 +547,6 @@
 }
 
 #pragma mark -
-
-#pragma mark TODO: update selections when scrolling
-//Problem is, that although selections are tracked, cell reusing probably resets the selection state.
-//This can can be also fixed with scrolling/dragging delegate methods, but not efficient.
-
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
