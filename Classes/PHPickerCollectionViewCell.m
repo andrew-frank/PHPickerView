@@ -10,6 +10,8 @@
 
 @interface PHPickerCollectionViewCell ()
 
+@property (nonatomic, assign) BOOL laidOutSubviews;
+
 @end
 
 @implementation PHPickerCollectionViewCell
@@ -19,6 +21,11 @@
     CGRect frame = self.bounds;
     
     self.layer.doubleSided = NO;
+    
+    self.margin = CGSizeZero;
+    self.useRoundedButton = NO;
+    self.roundedButtonSize = CGSizeZero;
+    
     self.label = [[UILabel alloc] initWithFrame:frame];
     self.label.backgroundColor = [UIColor clearColor];
     self.label.textAlignment = NSTextAlignmentCenter;
@@ -31,9 +38,9 @@
     
     [self.contentView addSubview:self.label];
     
-    self.roundedButton = [[PHRoundedButton alloc] initWithFrame:self.bounds buttonStyle:PHRoundedButtonDefault];
+    self.roundedButton = [[PHRoundedButton alloc] initWithFrame:CGRectZero buttonStyle:PHRoundedButtonDefault];
     self.roundedButton.userInteractionEnabled = NO;
-    //self.roundedButton.hidden = YES;
+    self.roundedButton.hidden = YES;
     [self.contentView addSubview:self.roundedButton];
 }
 
@@ -68,28 +75,32 @@
     [self.roundedButton setSelected:selected];
 }
 
-//-(void)setUseRoundedButton:(BOOL)useRoundedButton
-//{
-//    if(useRoundedButton == _useRoundedButton)
-//        return;
-//    _useRoundedButton = useRoundedButton;
-//    if(useRoundedButton) {
-////        [self.roundedButton removeFromSuperview];
-//        self.roundedButton.hidden = YES;
-//        [self layoutSubviews];
-//    } else {
-////        [self.contentView addSubview:self.roundedButton];
-//        self.roundedButton.hidden = NO;
-//        [self layoutSubviews];
-//    }
-//}
+-(void)setUseRoundedButton:(BOOL)useRoundedButton
+{
+    if(useRoundedButton == _useRoundedButton)
+        return;
+    _useRoundedButton = useRoundedButton;
+    self.roundedButton.hidden = !useRoundedButton;
+    if(self.laidOutSubviews)
+        [self layoutSubviews];
+}
 
 -(void)setRoundedButtonSize:(CGSize)size
 {
     if(size.width == _roundedButtonSize.width && size.height == _roundedButtonSize.height)
         return;
     _roundedButtonSize = size;
-    [self layoutSubviews];
+    if(self.laidOutSubviews)
+        [self layoutSubviews];
+}
+
+-(void)setMargin:(CGSize)margin
+{
+    if(margin.width == margin.width && _margin.height == margin.height)
+        return;
+    _margin = margin;
+    if(self.laidOutSubviews)
+        [self layoutSubviews];
 }
 
 -(void)setInteritemSpacing:(CGFloat)interitemSpacing
@@ -97,7 +108,8 @@
     if(interitemSpacing == _interitemSpacing)
         return;
     _interitemSpacing = interitemSpacing;
-    [self layoutSubviews];
+    if(self.laidOutSubviews)
+        [self layoutSubviews];
 }
 
 -(void)layoutSubviews
@@ -105,14 +117,17 @@
     [super layoutSubviews];
     
     if(self.useRoundedButton == NO) {
-        self.label.frame = self.bounds;
-
+        self.roundedButton.frame = CGRectZero;
+        self.label.frame = CGRectInset(self.bounds, -self.margin.width, -self.margin.height);
+        
     } else {
         CGFloat x = self.bounds.size.width/2 - self.roundedButtonSize.width/2;
         CGRect frame = CGRectMake(x, 0, self.roundedButtonSize.width, self.roundedButtonSize.height);
+        frame = CGRectInset(frame, -self.margin.width, -self.margin.height);
         self.roundedButton.frame = frame;
         
         frame = CGRectMake(0, self.roundedButton.frame.size.height + self.interitemSpacing, self.bounds.size.width, self.bounds.size.height - self.roundedButton.frame.size.height - self.interitemSpacing);
+        frame = CGRectInset(frame, -self.margin.width, -self.margin.height);
         self.label.frame = frame;
     }
 }

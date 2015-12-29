@@ -21,4 +21,6 @@
 @property (nonatomic, assign) CGFloat interitemSpacing;
 @property (nonatomic, assign) CGSize roundedButtonSize;
 
+@property (nonatomic, assign) CGSize margin;
+
 @end

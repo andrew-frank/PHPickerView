@@ -444,20 +444,13 @@
         }
         
         [cell layoutSubviews];
-
-//        if (title) {
-//            cell.label.bounds = (CGRect){CGPointZero, [self sizeForString:title]};
-//            if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)]) {
-//                CGSize margin = [self.delegate pickerView:self marginForItem:indexPath.item];
-//                cell.label.frame = CGRectInset(cell.label.frame, -margin.width, -margin.height);
-//            }
-//        } else {
-//            cell.label.text = nil;
-//        }
         
     } else { // do not use rounded button
         if (title) {
             cell.label.bounds = (CGRect){CGPointZero, [self sizeForString:title]};
+            
+            
+            //fuck the margins
             if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)]) {
                 CGSize margin = [self.delegate pickerView:self marginForItem:indexPath.item];
                 cell.label.frame = CGRectInset(cell.label.frame, -margin.width, -margin.height);
