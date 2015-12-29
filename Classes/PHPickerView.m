@@ -51,7 +51,10 @@
 
 //////////
 
+
 @implementation PHPickerView
+
+#pragma mark TODO: update selections when scrolling
 
 - (void)initialize
 {
@@ -62,6 +65,10 @@
     self.pickerViewStyle = self.pickerViewStyle ?: PHPickerViewStyle3D;
     self.pickerViewOrientation = self.pickerViewOrientation ?: PHPickerViewOrientationHorizontal;
     self.maskDisabled = self.maskDisabled;
+    
+    self.useRoundedButton = NO;
+    self.roundedButtonSize = CGSizeZero;
+    self.multipleSelection = NO;
     
     [self.collectionView removeFromSuperview];
     self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
@@ -74,8 +81,7 @@
     self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.collectionView.dataSource = self;
-    [self.collectionView registerClass:[PHPickerCollectionViewCell class]
-            forCellWithReuseIdentifier:NSStringFromClass([PHPickerCollectionViewCell class])];
+    [self.collectionView registerClass:[PHPickerCollectionViewCell class] forCellWithReuseIdentifier:NSStringFromClass([PHPickerCollectionViewCell class])];
     [self addSubview:self.collectionView];
     
     self.intercepter = [PHPickerViewDelegateIntercepter new];
@@ -403,35 +409,69 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    PHPickerCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([PHPickerCollectionViewCell class])
-                                                                                 forIndexPath:indexPath];
+    NSString *reuseId = NSStringFromClass([PHPickerCollectionViewCell class]);
 
+    //this is bad, because you need to register class for reuseId before you know appearanceIds...
+//    if([self.dataSource respondsToSelector:@selector(pickerView:roundedButtonAppearanceIdentifierForItem:)]) {
+//        NSString *roundedAppearanceId = [self.dataSource pickerView:self roundedButtonAppearanceIdentifierForItem:indexPath.item];
+//        if(roundedAppearanceId.length)
+//            reuseId = [NSString stringWithFormat:@"%@+%@", reuseId, roundedAppearanceId];
+//    }
+    
+    PHPickerCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
+    
+    NSString *title = nil;
     if ([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)]) {
-        NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
+        title = [self.dataSource pickerView:self titleForItem:indexPath.item];
         cell.label.text = title;
         cell.label.textColor = self.textColor;
         cell.label.highlightedTextColor = self.highlightedTextColor;
         cell.label.font = self.font;
         cell.font = self.font;
         cell.highlightedFont = self.highlightedFont;
-        cell.label.bounds = (CGRect){CGPointZero, [self sizeForString:title]};
-        if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)]) {
-            CGSize margin = [self.delegate pickerView:self marginForItem:indexPath.item];
-            cell.label.frame = CGRectInset(cell.label.frame, -margin.width, -margin.height);
-        }
-        if ([self.delegate respondsToSelector:@selector(pickerView:configureLabel:forItem:)]) {
-            [self.delegate pickerView:self configureLabel:cell.label forItem:indexPath.item];
+    }
+    
+    
+    cell.useRoundedButton = self.useRoundedButton;
+    cell.roundedButtonSize = self.roundedButtonSize;
+    
+    if(self.useRoundedButton) {
+        if([self.dataSource respondsToSelector:@selector(pickerView:roundedButtonAppearanceIdentifierForItem:)]) {
+            NSString *roundedAppearanceId = [self.dataSource pickerView:self roundedButtonAppearanceIdentifierForItem:indexPath.item];
+            if(roundedAppearanceId.length) {
+                [cell.roundedButton setAppearanceIdentifier:roundedAppearanceId];
+            }
         }
         
-    } else if ([self.dataSource respondsToSelector:@selector(pickerView:imageForItem:)]) {
-        cell.imageView.image = [self.dataSource pickerView:self imageForItem:indexPath.item];
+        [cell layoutSubviews];
+
+//        if (title) {
+//            cell.label.bounds = (CGRect){CGPointZero, [self sizeForString:title]};
+//            if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)]) {
+//                CGSize margin = [self.delegate pickerView:self marginForItem:indexPath.item];
+//                cell.label.frame = CGRectInset(cell.label.frame, -margin.width, -margin.height);
+//            }
+//        } else {
+//            cell.label.text = nil;
+//        }
+        
+    } else { // do not use rounded button
+        if (title) {
+            cell.label.bounds = (CGRect){CGPointZero, [self sizeForString:title]};
+            if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)]) {
+                CGSize margin = [self.delegate pickerView:self marginForItem:indexPath.item];
+                cell.label.frame = CGRectInset(cell.label.frame, -margin.width, -margin.height);
+            }
+        } else {
+            cell.label.text = nil;
+        }
     }
     
     cell.selected = [self isItemSelected:indexPath.item]; // (indexPath.item == self.selectedItem);
     NSLog(@"Cell %lu is selected: %i", indexPath.item, (int)cell.selected);
     
-    if([self.dataSource respondsToSelector:@selector(pickerView:configureCell:forItem:)]) {
-        [self.dataSource pickerView:self configureCell:&cell forItem:indexPath.item];
+    if([self.delegate respondsToSelector:@selector(pickerView:configureCell:forItem:)]) {
+        [self.delegate pickerView:self configureCell:&cell forItem:indexPath.item];
     }
     
     return cell;
@@ -439,33 +479,44 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGSize size = (self.pickerViewOrientation == PHPickerViewOrientationVertical) ? CGSizeMake(collectionView.bounds.size.width, self.interitemSpacing) : CGSizeMake(self.interitemSpacing, collectionView.bounds.size.height);
+    CGSize size = (self.pickerViewOrientation == PHPickerViewOrientationHorizontal) ? CGSizeMake(self.interitemSpacing, collectionView.bounds.size.height) : CGSizeMake(collectionView.bounds.size.width, self.interitemSpacing);
     
+    CGSize labelSize = size;
+    CGSize roundedButtonSize = size;
+    
+    //calculate label size
     if ([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)]) {
         NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
-        if (self.pickerViewOrientation == PHPickerViewOrientationVertical) {
-            size.height += [self sizeForString:title].height;
+        if (self.pickerViewOrientation == PHPickerViewOrientationHorizontal) {
+            labelSize.width += [self sizeForString:title].width;
         } else {
-            size.width += [self sizeForString:title].width;
-        }
-        
-        if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)]) {
-            CGSize margin = [self.delegate pickerView:self marginForItem:indexPath.item];
-            if (self.pickerViewOrientation == PHPickerViewOrientationVertical) {
-                size.height += margin.height * 2;
-            } else {
-                size.width += margin.width * 2;
-            }
-        }
-        
-    } else if ([self.dataSource respondsToSelector:@selector(pickerView:imageForItem:)]) {
-        UIImage *image = [self.dataSource pickerView:self imageForItem:indexPath.item];
-        if (self.pickerViewOrientation == PHPickerViewOrientationVertical) {
-            size.height += image.size.height;
-        } else {
-            size.width += image.size.width;
+            labelSize.height += [self sizeForString:title].height;
         }
     }
+    
+    if(self.useRoundedButton == NO)
+        return labelSize;
+    
+    //pick the bigger size
+    if(self.pickerViewOrientation == PHPickerViewOrientationHorizontal) {
+        roundedButtonSize.width += self.roundedButtonSize.width;
+        size = (labelSize.width > roundedButtonSize.width) ? labelSize : roundedButtonSize;
+        
+    } else {
+        roundedButtonSize.height += self.roundedButtonSize.height;
+        size = (labelSize.height > roundedButtonSize.height) ? labelSize : roundedButtonSize;
+    }
+    
+    //add margin
+    if ([self.delegate respondsToSelector:@selector(pickerView:marginForItem:)]) {
+        CGSize margin = [self.delegate pickerView:self marginForItem:indexPath.item];
+        if (self.pickerViewOrientation == PHPickerViewOrientationHorizontal) {
+            size.width += margin.width * 2;
+        } else {
+            size.height += margin.height * 2;
+        }
+    }
+    
     return size;
 }
 
@@ -506,6 +557,11 @@
 }
 
 #pragma mark -
+
+#pragma mark TODO: update selections when scrolling
+//Problem is, that although selections are tracked, cell reusing probably resets the selection state.
+//This can can be also fixed with scrolling/dragging delegate methods, but not efficient.
+
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {

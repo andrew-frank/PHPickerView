@@ -32,18 +32,12 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
 - (NSUInteger)numberOfItemsInPickerView:(PHPickerView *)pickerView;
 @optional
 
-/**
- @brief Use it to configure properly dequeued cell.
- @discussion  Called after titleForItem: and imageForItem:, so you can use them to have initially configured cell as a starting point.
-*/
-- (void)pickerView:(PHPickerView *)pickerView configureCell:(PHPickerCollectionViewCell **)cell forItem:(NSInteger)item;
-
 /*
- One of the below is called to generate items, beginning with the top-most data source method. Method pickerView:configureCell:forItem is called after those methods, so you can e.g. provide a title and then configure the cell, or just configure it straight away.
+ Provide a title to create a UILabel in pickerViewCell or provide an appearanceIdentifier for roundedButton to create a PHRoundedButton above the label.
  */
 - (NSString *)pickerView:(PHPickerView *)pickerView titleForItem:(NSInteger)item;
-- (UIImage *)pickerView:(PHPickerView *)pickerView imageForItem:(NSInteger)item;
-
+- (NSString *)pickerView:(PHPickerView *)pickerView roundedButtonAppearanceIdentifierForItem:(NSInteger)item;
+//- (UIImage *)pickerView:(PHPickerView *)pickerView imageForItem:(NSInteger)item;
 
 @end
 
@@ -54,7 +48,13 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
 - (void)pickerView:(PHPickerView *)pickerView didSelectItem:(NSInteger)item;
 - (void)pickerView:(PHPickerView *)pickerView didDeselectItem:(NSInteger)item;
 - (CGSize)pickerView:(PHPickerView *)pickerView marginForItem:(NSInteger)item;
-- (void)pickerView:(PHPickerView *)pickerView configureLabel:(UILabel * const)label forItem:(NSInteger)item;
+//- (void)pickerView:(PHPickerView *)pickerView configureLabel:(UILabel * const)label forItem:(NSInteger)item;
+/**
+ @brief Use it to configure properly dequeued cell.
+ @discussion  Called after titleForItem: and roundedButtonAppearanceIdentifierForItem:, so you can use them to have initially configured cell as a starting point.
+ */
+- (void)pickerView:(PHPickerView *)pickerView configureCell:(PHPickerCollectionViewCell **)cell forItem:(NSInteger)item;
+
 @end
 
 /////////////////////
@@ -68,11 +68,12 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
 @property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, strong) UIColor *highlightedTextColor;
 @property (nonatomic, assign) CGFloat interitemSpacing;
+@property (nonatomic, assign) BOOL useRoundedButton;
+@property (nonatomic, assign) CGSize roundedButtonSize;
 @property (nonatomic, assign) CGFloat fisheyeFactor; // 0...1; slight value recommended such as 0.0001
 @property (nonatomic, assign, getter=isMaskDisabled) BOOL maskDisabled;
 @property (nonatomic, assign) PHPickerViewStyle pickerViewStyle;
 @property (nonatomic, assign) PHPickerViewOrientation pickerViewOrientation;
-//@property (nonatomic, assign, readonly) NSUInteger selectedItem;
 @property (nonatomic, assign, readonly) CGPoint contentOffset;
 
 @property (nonatomic, assign) BOOL multipleSelection;
