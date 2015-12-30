@@ -346,6 +346,8 @@
 - (void)selectItem:(NSUInteger)item animated:(BOOL)animated notifySelection:(BOOL)notifySelection
 {
     [self setItem:item selected:YES];
+    
+    
 
     if(self.multipleSelection == NO) {
         [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
@@ -427,17 +429,24 @@
 
     PHPickerCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
     
-    NSString *title = nil;
-    if ([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)]) {
-        title = [self.dataSource pickerView:self titleForItem:indexPath.item];
-        cell.label.text = title;
-        cell.label.textColor = self.textColor;
-        cell.label.highlightedTextColor = self.highlightedTextColor;
-        cell.label.font = self.font;
-        cell.font = self.font;
-        cell.highlightedFont = self.highlightedFont;
-    }
+    const BOOL selected = [self isItemSelected:indexPath.item];
     
+    NSString *title = nil;
+    NSString *selectedTitle = nil;
+    if([self.dataSource respondsToSelector:@selector(pickerView:selectedTitleForItem:)])
+        selectedTitle = [self.dataSource pickerView:self selectedTitleForItem:indexPath.item];
+    if ([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)])
+        title = [self.dataSource pickerView:self titleForItem:indexPath.item];
+    
+    cell.title = title;
+    cell.selectedTitle = selectedTitle;
+    
+    cell.label.text = selected ? selectedTitle : title;
+    cell.label.textColor = self.textColor;
+    cell.label.highlightedTextColor = self.highlightedTextColor;
+    cell.label.font = self.font;
+    cell.font = self.font;
+    cell.highlightedFont = self.highlightedFont;
     
     cell.useRoundedButton = self.useRoundedButton;
     cell.roundedButtonSize = self.roundedButtonSize;
@@ -458,7 +467,7 @@
     
     [cell layoutSubviews];
     
-    cell.selected = [self isItemSelected:indexPath.item];
+    cell.selected = selected;
     
     if([self.delegate respondsToSelector:@selector(pickerView:configureCell:forItem:)]) {
         [self.delegate pickerView:self configureCell:&cell forItem:indexPath.item];
@@ -474,13 +483,28 @@
     CGSize labelSize = size;
     CGSize roundedButtonSize = size;
     
+    //label size
+//    BOOL selected = [self isItemSelected:indexPath.item];
+//    NSString *title = nil;
+//    if(selected && [self.dataSource respondsToSelector:@selector(pickerView:selectedTitleForItem:)]) {
+//        title = [self.dataSource pickerView:self selectedTitleForItem:indexPath.item];
+//        
+//    } else if ([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)]) {
+//        title = [self.dataSource pickerView:self titleForItem:indexPath.item];
+//    }
+    
+    NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
+    NSString *selectedTitle = [self.dataSource pickerView:self selectedTitleForItem:indexPath.item];
+    
     //calculate label size
-    if ([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)]) {
-        NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
+    if (title) {
+        CGFloat textSize = 0.;
         if (self.pickerViewOrientation == PHPickerViewOrientationHorizontal) {
-            labelSize.width += [self sizeForString:title].width;
+            textSize = MAX([self sizeForString:title].width, [self sizeForString:selectedTitle].width);
+            labelSize.width += textSize;
         } else {
-            labelSize.height += [self sizeForString:title].height;
+            textSize = MAX([self sizeForString:title].height, [self sizeForString:selectedTitle].height);
+            labelSize.height += textSize;
         }
     }
     

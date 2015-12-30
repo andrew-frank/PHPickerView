@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) PHPickerView *pickerView;
 @property (nonatomic, strong) NSArray *titles;
+@property (nonatomic, strong) NSArray *selectedTitles;
 
 @end
 
@@ -64,8 +65,8 @@
     self.pickerView.roundedButtonSize = CGSizeMake(52, 52);
     self.pickerView.multipleSelection = YES;
     
-    self.titles = @[@"Friends",
-                    @"Influencers",
+    self.titles = @[@"All",
+                    @"All",
                     @"Alternative",
                     @"Casual",
                     @"DJ Bar",
@@ -73,6 +74,16 @@
                     @"Members",
                     @"Underground",
                     @"Upmarket"];
+    
+    self.selectedTitles = @[@"Friends",
+                            @"Influencers",
+                            @"Alternative",
+                            @"Casual",
+                            @"DJ Bar",
+                            @"Gay",
+                            @"Members",
+                            @"Underground",
+                            @"Upmarket"];
     
     [self.pickerView reloadData];
     
@@ -97,9 +108,11 @@
     
     (*cell).roundedButton.backgroundImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%i", (int)item%4]];
     
-    NSString *title = self.titles[item];
-    if(title) title = [title substringToIndex:1];
-    (*cell).roundedButton.textLabel.text = title;
+    NSString *letter = nil;
+    NSString *title = ((*cell).selected ? self.selectedTitles[item] : self.titles[item]);
+    title = self.selectedTitles[item];
+    if(title) letter = [title substringToIndex:1];
+    (*cell).roundedButton.textLabel.text = letter;
     (*cell).roundedButton.textLabel.font = [UIFont boldSystemFontOfSize:30];
 }
 
@@ -116,6 +129,11 @@
 - (NSString *)pickerView:(PHPickerView *)pickerView titleForItem:(NSInteger)item
 {
     return self.titles[item];
+}
+
+- (NSString *)pickerView:(PHPickerView *)pickerView selectedTitleForItem:(NSInteger)item
+{
+    return self.selectedTitles[item];
 }
 
 #pragma mark - PHPickerViewDelegate

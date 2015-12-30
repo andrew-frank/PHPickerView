@@ -36,6 +36,7 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
  Provide a title to create a UILabel in pickerViewCell or provide an appearanceIdentifier for roundedButton to create a PHRoundedButton above the label.
  */
 - (NSString *)pickerView:(PHPickerView *)pickerView titleForItem:(NSInteger)item;
+- (NSString *)pickerView:(PHPickerView *)pickerView selectedTitleForItem:(NSInteger)item;
 - (NSString *)pickerView:(PHPickerView *)pickerView roundedButtonAppearanceIdentifierForItem:(NSInteger)item;
 //- (UIImage *)pickerView:(PHPickerView *)pickerView imageForItem:(NSInteger)item;
 

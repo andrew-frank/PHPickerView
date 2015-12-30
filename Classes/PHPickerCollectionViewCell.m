@@ -72,6 +72,8 @@
     [self.label.layer addAnimation:transition forKey:nil];
     
     self.label.font = self.selected ? self.highlightedFont : self.font;
+    self.label.text = self.selected ? self.selectedTitle : self.title;
+    
     [self.roundedButton setSelected:selected];
 }
 

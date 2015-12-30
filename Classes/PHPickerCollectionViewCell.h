@@ -17,6 +17,9 @@
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, strong) UIFont *highlightedFont;
 
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *selectedTitle;
+
 @property (nonatomic, assign) BOOL useRoundedButton;
 @property (nonatomic, assign) CGFloat interitemSpacing;
 @property (nonatomic, assign) CGSize roundedButtonSize;
