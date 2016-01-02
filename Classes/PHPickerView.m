@@ -546,6 +546,10 @@
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
+    if(self.centerFirstItem == NO)
+        return UIEdgeInsetsZero;
+    
+    //create insets to center first item
     NSInteger number = [self collectionView:collectionView numberOfItemsInSection:section];
     NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:section];
     CGSize firstSize = [self collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:firstIndexPath];

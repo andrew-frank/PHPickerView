@@ -77,6 +77,7 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
 @property (nonatomic, assign) PHPickerViewOrientation pickerViewOrientation;
 @property (nonatomic, assign, readonly) CGPoint contentOffset;
 
+@property (nonatomic, assign) BOOL centerFirstItem;
 @property (nonatomic, assign) BOOL multipleSelection;
 
 - (void)reloadData;
