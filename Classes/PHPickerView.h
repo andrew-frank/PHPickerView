@@ -38,7 +38,6 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
 - (NSString *)pickerView:(PHPickerView *)pickerView titleForItem:(NSInteger)item;
 - (NSString *)pickerView:(PHPickerView *)pickerView selectedTitleForItem:(NSInteger)item;
 - (NSString *)pickerView:(PHPickerView *)pickerView roundedButtonAppearanceIdentifierForItem:(NSInteger)item;
-//- (UIImage *)pickerView:(PHPickerView *)pickerView imageForItem:(NSInteger)item;
 
 @end
 
@@ -49,7 +48,6 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
 - (void)pickerView:(PHPickerView *)pickerView didSelectItem:(NSInteger)item;
 - (void)pickerView:(PHPickerView *)pickerView didDeselectItem:(NSInteger)item;
 - (CGSize)pickerView:(PHPickerView *)pickerView marginForItem:(NSInteger)item;
-//- (void)pickerView:(PHPickerView *)pickerView configureLabel:(UILabel * const)label forItem:(NSInteger)item;
 /**
  @brief Use it to configure properly dequeued cell.
  @discussion  Called after titleForItem: and roundedButtonAppearanceIdentifierForItem:, so you can use them to have initially configured cell as a starting point.
@@ -83,17 +81,16 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
 @property (nonatomic, assign) BOOL centerFirstItem;
 @property (nonatomic, assign) BOOL multipleSelection;
 
-/** 
+/**
  Sets wether to allow mulptipleSelection. paginateScrolling sets if to allign first visible cell to left (only if multipleSelection=YES) and if PHPickerViewStyle = Flat.
  */
 -(void)setMutlipleSelection:(BOOL)multipleSelection paginateScrolling:(BOOL)multipleSelectionPaginateScrolling;
 
 - (void)reloadData;
 - (void)scrollToItem:(NSUInteger)item animated:(BOOL)animated;
-- (void)selectItem:(NSUInteger)item animated:(BOOL)animated;
 
 /**
- Sets items selected, without animations, but does not select the cells itself. It assumes they are not created yet, method for setting initial selections. items is NSArray of NSNumbers
+ Sets items to be selected when cells will be created. Method for setting initial selections. Items is NSArray of NSNumbers
  */
 - (void)setInitialItemsSelected:(NSArray *)items;
 

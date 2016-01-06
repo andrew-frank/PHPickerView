@@ -78,7 +78,7 @@
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.allowsMultipleSelection = self.multipleSelection;
-
+    
     self.collectionView.backgroundColor = [UIColor clearColor];
     self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -378,7 +378,7 @@
 - (void)deselectItem:(NSUInteger)item animated:(BOOL)animated notifySelection:(BOOL)notifySelection
 {
     [self setItem:item selected:NO];
-
+    
     [self.collectionView deselectItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0] animated:animated];
     
     [self scrollToItem:item animated:animated];
@@ -404,7 +404,7 @@
             }
             break;
         }
-        
+            
         case PHPickerViewStyle3D: {
             if ([self.dataSource numberOfItemsInPickerView:self]) {
                 for (NSUInteger i = 0; i < [self collectionView:self.collectionView numberOfItemsInSection:0]; i++) {
@@ -446,7 +446,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *reuseId = NSStringFromClass([PHPickerCollectionViewCell class]);
-
+    
     PHPickerCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
     
     const BOOL selected = [self isItemSelected:indexPath.item];
@@ -487,7 +487,12 @@
     
     [cell layoutSubviews];
     
-    [cell setSelected:selected animated:NO];
+    if(selected) {
+        [cell setSelected:selected animated:YES];
+        //Without it, UICollectionView blocked and cells will not be deselected ever.
+        //http://stackoverflow.com/a/17812116/3464670
+        [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:(UICollectionViewScrollPositionNone)];
+    }
     
     if([self.delegate respondsToSelector:@selector(pickerView:configureCell:forItem:)]) {
         [self.delegate pickerView:self configureCell:&cell forItem:indexPath.item];
