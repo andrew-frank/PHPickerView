@@ -26,4 +26,6 @@
 
 @property (nonatomic, assign) CGSize margin;
 
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+
 @end

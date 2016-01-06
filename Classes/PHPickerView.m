@@ -40,9 +40,12 @@
 
 @interface PHPickerView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, PHCollectionViewLayoutDelegate>
 
+@property (nonatomic, assign) BOOL multipleSelectionPaginateScrolling;
+
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableDictionary *selectedItems;
 @property (nonatomic, strong) PHPickerViewDelegateIntercepter *intercepter;
+
 - (CGFloat)offsetForItem:(NSUInteger)item;
 - (void)didEndScrolling;
 - (CGSize)sizeForString:(NSString *)string;
@@ -53,8 +56,6 @@
 
 
 @implementation PHPickerView
-
-#pragma mark TODO: update selections when scrolling
 
 - (void)initialize
 {
@@ -70,10 +71,10 @@
     self.useRoundedButton = NO;
     self.roundedButtonSize = CGSizeZero;
     self.multipleSelection = NO;
+    self.multipleSelectionPaginateScrolling = NO;
     
     [self.collectionView removeFromSuperview];
-    self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds
-                                             collectionViewLayout:[self collectionViewLayout]];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:[self collectionViewLayout]];
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.allowsMultipleSelection = self.multipleSelection;
@@ -188,6 +189,13 @@
     self.collectionView.allowsMultipleSelection = multipleSelection;
 }
 
+- (void)setMutlipleSelection:(BOOL)multipleSelection paginateScrolling:(BOOL)multipleSelectionPaginateScrolling
+{
+    self.multipleSelection = multipleSelection;
+    self.multipleSelectionPaginateScrolling = multipleSelectionPaginateScrolling;
+}
+
+
 #pragma mark -
 
 - (PHCollectionViewLayout *)collectionViewLayout
@@ -263,19 +271,14 @@
     return offset;
 }
 
-- (void)scrollToItem:(NSUInteger)item animated:(BOOL)animated
+/**
+ ScrollPosition works only in FlatStyle
+ */
+-(void)scrollToItem:(NSUInteger)item animated:(BOOL)animated scrollPosition:(UICollectionViewScrollPosition)scrollPosition
 {
     switch (self.pickerViewStyle) {
         case PHPickerViewStyleFlat: {
-            if (self.pickerViewOrientation == PHPickerViewOrientationVertical) {
-                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
-                                            atScrollPosition:UICollectionViewScrollPositionCenteredVertically
-                                                    animated:animated];
-            } else {
-                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
-                                            atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-                                                    animated:animated];
-            }
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0] atScrollPosition:scrollPosition animated:animated];
             break;
         }
         case PHPickerViewStyle3D: {
@@ -290,6 +293,14 @@
         }
         default: break;
     }
+}
+
+- (void)scrollToItem:(NSUInteger)item animated:(BOOL)animated
+{
+    if (self.pickerViewOrientation == PHPickerViewOrientationVertical)
+        [self scrollToItem:item animated:animated scrollPosition:(UICollectionViewScrollPositionCenteredVertically)];
+    else
+        [self scrollToItem:item animated:animated scrollPosition:(UICollectionViewScrollPositionCenteredHorizontally)];
 }
 
 -(void)scrollToFirstSelected
@@ -333,6 +344,13 @@
 
 //////////
 
+- (void)setItemsSelected:(NSArray *)items
+{
+    for (NSNumber *item in items) {
+        [self setItem:item.integerValue selected:YES];
+    }
+}
+
 - (void)selectItem:(NSUInteger)item animated:(BOOL)animated
 {
     [self selectItem:item animated:animated notifySelection:YES];
@@ -347,13 +365,9 @@
 {
     [self setItem:item selected:YES];
     
-    
-
-    if(self.multipleSelection == NO) {
-        [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
-                                          animated:animated
-                                    scrollPosition:UICollectionViewScrollPositionNone];
-    }
+    [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0]
+                                      animated:animated
+                                scrollPosition:UICollectionViewScrollPositionNone];
     
     [self scrollToItem:item animated:animated];
     
@@ -378,10 +392,16 @@
 {
     switch (self.pickerViewStyle) {
         case PHPickerViewStyleFlat: {
-            CGPoint center = [self convertPoint:self.collectionView.center toView:self.collectionView];
-            NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:center];
-            if(self.multipleSelection == NO)
+            if(self.multipleSelection == NO) {
+                CGPoint center = [self convertPoint:self.collectionView.center toView:self.collectionView];
+                NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:center];
                 [self selectItem:indexPath.item animated:YES];
+                
+            } else if(self.multipleSelectionPaginateScrolling) {
+                CGPoint left = [self convertPoint:self.collectionView.frame.origin toView:self.collectionView];
+                NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:left];
+                [self scrollToItem:indexPath.item animated:YES scrollPosition:(UICollectionViewScrollPositionLeft)];
+            }
             break;
         }
         
@@ -467,7 +487,7 @@
     
     [cell layoutSubviews];
     
-    cell.selected = selected;
+    [cell setSelected:selected animated:NO];
     
     if([self.delegate respondsToSelector:@selector(pickerView:configureCell:forItem:)]) {
         [self.delegate pickerView:self configureCell:&cell forItem:indexPath.item];
@@ -482,16 +502,6 @@
     
     CGSize labelSize = size;
     CGSize roundedButtonSize = size;
-    
-    //label size
-//    BOOL selected = [self isItemSelected:indexPath.item];
-//    NSString *title = nil;
-//    if(selected && [self.dataSource respondsToSelector:@selector(pickerView:selectedTitleForItem:)]) {
-//        title = [self.dataSource pickerView:self selectedTitleForItem:indexPath.item];
-//        
-//    } else if ([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)]) {
-//        title = [self.dataSource pickerView:self titleForItem:indexPath.item];
-//    }
     
     NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
     NSString *selectedTitle = [self.dataSource pickerView:self selectedTitleForItem:indexPath.item];

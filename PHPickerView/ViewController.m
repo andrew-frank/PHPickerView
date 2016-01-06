@@ -63,7 +63,7 @@
     
     self.pickerView.useRoundedButton = YES;
     self.pickerView.roundedButtonSize = CGSizeMake(52, 52);
-    self.pickerView.multipleSelection = YES;
+    [self.pickerView setMutlipleSelection:YES paginateScrolling:NO];
     
     self.titles = @[@"All",
                     @"All",

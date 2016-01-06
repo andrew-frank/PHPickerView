@@ -77,11 +77,23 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
 @property (nonatomic, assign) PHPickerViewOrientation pickerViewOrientation;
 @property (nonatomic, assign, readonly) CGPoint contentOffset;
 
+/**
+ A.k.a. left inset
+ */
 @property (nonatomic, assign) BOOL centerFirstItem;
 @property (nonatomic, assign) BOOL multipleSelection;
+
+/** 
+ Sets wether to allow mulptipleSelection. paginateScrolling sets if to allign first visible cell to left (only if multipleSelection=YES) and if PHPickerViewStyle = Flat.
+ */
+-(void)setMutlipleSelection:(BOOL)multipleSelection paginateScrolling:(BOOL)multipleSelectionPaginateScrolling;
 
 - (void)reloadData;
 - (void)scrollToItem:(NSUInteger)item animated:(BOOL)animated;
 - (void)selectItem:(NSUInteger)item animated:(BOOL)animated;
+/**
+ Sets items selected, without animations. Useful for setting initial selections. NSArray of NSNumbers
+ */
+- (void)setItemsSelected:(NSArray *)items;
 
 @end

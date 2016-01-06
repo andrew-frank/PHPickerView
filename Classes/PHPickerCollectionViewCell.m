@@ -34,7 +34,6 @@
     self.label.lineBreakMode = NSLineBreakByTruncatingTail;
     self.label.highlightedTextColor = [UIColor blackColor];
     self.label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-//    self.label.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin);
     
     [self.contentView addSubview:self.label];
     
@@ -62,19 +61,26 @@
     return self;
 }
 
-- (void)setSelected:(BOOL)selected
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected];
     
-    CATransition *transition = [CATransition animation];
-    [transition setType:kCATransitionFade];
-    [transition setDuration:0.15];
-    [self.label.layer addAnimation:transition forKey:nil];
+    if(animated) {
+        CATransition *transition = [CATransition animation];
+        [transition setType:kCATransitionFade];
+        [transition setDuration:0.15];
+        [self.label.layer addAnimation:transition forKey:nil];
+        
+        self.label.font = self.selected ? self.highlightedFont : self.font;
+        self.label.text = self.selected ? self.selectedTitle : self.title;
+    }
     
-    self.label.font = self.selected ? self.highlightedFont : self.font;
-    self.label.text = self.selected ? self.selectedTitle : self.title;
-    
-    [self.roundedButton setSelected:selected];
+    [self.roundedButton setSelected:selected animated:animated];
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    [self setSelected:selected animated:YES];
 }
 
 -(void)setUseRoundedButton:(BOOL)useRoundedButton
@@ -83,7 +89,7 @@
         return;
     _useRoundedButton = useRoundedButton;
     self.roundedButton.hidden = !useRoundedButton;
-    if(self.laidOutSubviews)
+    if(self.laidOutSubviews == NO)
         [self layoutSubviews];
 }
 
@@ -92,7 +98,7 @@
     if(size.width == _roundedButtonSize.width && size.height == _roundedButtonSize.height)
         return;
     _roundedButtonSize = size;
-    if(self.laidOutSubviews)
+    if(self.laidOutSubviews == NO)
         [self layoutSubviews];
 }
 
@@ -101,7 +107,7 @@
     if(margin.width == margin.width && _margin.height == margin.height)
         return;
     _margin = margin;
-    if(self.laidOutSubviews)
+    if(self.laidOutSubviews == NO)
         [self layoutSubviews];
 }
 
@@ -117,7 +123,6 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    
     self.laidOutSubviews = YES;
     
     if(self.useRoundedButton == NO) {
