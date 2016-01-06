@@ -344,7 +344,7 @@
 
 //////////
 
-- (void)setItemsSelected:(NSArray *)items
+- (void)setInitialItemsSelected:(NSArray *)items
 {
     for (NSNumber *item in items) {
         [self setItem:item.integerValue selected:YES];

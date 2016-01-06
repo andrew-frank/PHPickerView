@@ -91,9 +91,10 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
 - (void)reloadData;
 - (void)scrollToItem:(NSUInteger)item animated:(BOOL)animated;
 - (void)selectItem:(NSUInteger)item animated:(BOOL)animated;
+
 /**
- Sets items selected, without animations. Useful for setting initial selections. NSArray of NSNumbers
+ Sets items selected, without animations, but does not select the cells itself. It assumes they are not created yet, method for setting initial selections. items is NSArray of NSNumbers
  */
-- (void)setItemsSelected:(NSArray *)items;
+- (void)setInitialItemsSelected:(NSArray *)items;
 
 @end
