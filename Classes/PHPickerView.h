@@ -88,6 +88,7 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
 
 - (void)reloadData;
 - (void)scrollToItem:(NSUInteger)item animated:(BOOL)animated;
+- (void)scrollToItem:(NSUInteger)item animated:(BOOL)animated scrollPosition:(UICollectionViewScrollPosition)scrollPosition;
 
 /**
  Sets items to be selected when cells will be created. Method for setting initial selections. Items is NSArray of NSNumbers

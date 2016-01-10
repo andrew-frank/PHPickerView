@@ -508,18 +508,23 @@
     CGSize labelSize = size;
     CGSize roundedButtonSize = size;
     
-    NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
-    NSString *selectedTitle = [self.dataSource pickerView:self selectedTitleForItem:indexPath.item];
-    
-    //calculate label size
-    if (title) {
-        CGFloat textSize = 0.;
-        if (self.pickerViewOrientation == PHPickerViewOrientationHorizontal) {
-            textSize = MAX([self sizeForString:title].width, [self sizeForString:selectedTitle].width);
-            labelSize.width += textSize;
-        } else {
-            textSize = MAX([self sizeForString:title].height, [self sizeForString:selectedTitle].height);
-            labelSize.height += textSize;
+    if([self.dataSource respondsToSelector:@selector(pickerView:titleForItem:)]) {
+        NSString *title = [self.dataSource pickerView:self titleForItem:indexPath.item];
+        
+        NSString *selectedTitle = @"";
+        if([self.dataSource respondsToSelector:@selector(pickerView:selectedTitleForItem:)])
+            selectedTitle = [self.dataSource pickerView:self selectedTitleForItem:indexPath.item];
+        
+        //calculate label size
+        if (title) {
+            CGFloat textSize = 0.;
+            if (self.pickerViewOrientation == PHPickerViewOrientationHorizontal) {
+                textSize = MAX([self sizeForString:title].width, [self sizeForString:selectedTitle].width);
+                labelSize.width += textSize;
+            } else {
+                textSize = MAX([self sizeForString:title].height, [self sizeForString:selectedTitle].height);
+                labelSize.height += textSize;
+            }
         }
     }
     
