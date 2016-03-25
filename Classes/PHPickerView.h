@@ -84,7 +84,7 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
 /**
  Sets wether to allow mulptipleSelection. paginateScrolling sets if to allign first visible cell to left (only if multipleSelection=YES) and if PHPickerViewStyle = Flat.
  */
--(void)setMutlipleSelection:(BOOL)multipleSelection paginateScrolling:(BOOL)multipleSelectionPaginateScrolling;
+- (void)setMutlipleSelection:(BOOL)multipleSelection paginateScrolling:(BOOL)multipleSelectionPaginateScrolling;
 
 - (void)reloadData;
 - (void)scrollToItem:(NSUInteger)item animated:(BOOL)animated;
@@ -94,5 +94,15 @@ typedef NS_ENUM(NSUInteger, PHPickerViewOrientation) {
  Sets items to be selected when cells will be created. Method for setting initial selections. Items is NSArray of NSNumbers
  */
 - (void)setInitialItemsSelected:(NSArray *)items;
+
+/**
+ Sets item select without notifying delegate and scrolling to the corresponding cell. Usefull to prevent infinite loop, if delegate wishes to change selections in delegate callback.
+ */
+-(void)selectItemSilently:(NSInteger)item;
+
+/**
+ Sets item deselected without notifying delegate and scrolling to the corresponding cell. Usefull to prevent infinite loop, if delegate wishes to change selections in delegate callback.
+ */
+-(void)deselectItemSilently:(NSInteger)item;
 
 @end

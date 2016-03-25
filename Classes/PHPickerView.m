@@ -344,6 +344,22 @@
 
 //////////
 
+/**
+ Sets item select without notifying delegate and scrolling to the corresponding cell. Usefull to prevent infinite loop, if delegate wishes to change selections in delegate callback.
+ */
+-(void)selectItemSilently:(NSInteger)item
+{
+    [self selectItem:item animated:NO notifyDelegateAndScrollToItem:NO];
+}
+
+/**
+ Sets item deselected without notifying delegate and scrolling to the corresponding cell. Usefull to prevent infinite loop, if delegate wishes to change selections in delegate callback.
+ */
+-(void)deselectItemSilently:(NSInteger)item
+{
+    [self deselectItem:item animated:NO notifyDelegateAndScrollToItem:NO];
+}
+
 - (void)setInitialItemsSelected:(NSArray *)items
 {
     for (NSNumber *item in items) {
@@ -353,15 +369,15 @@
 
 - (void)selectItem:(NSUInteger)item animated:(BOOL)animated
 {
-    [self selectItem:item animated:animated notifySelection:YES];
+    [self selectItem:item animated:animated notifyDelegateAndScrollToItem:YES];
 }
 
 - (void)deselectItem:(NSUInteger)item animated:(BOOL)animated
 {
-    [self deselectItem:item animated:animated notifySelection:YES];
+    [self deselectItem:item animated:animated notifyDelegateAndScrollToItem:YES];
 }
 
-- (void)selectItem:(NSUInteger)item animated:(BOOL)animated notifySelection:(BOOL)notifySelection
+- (void)selectItem:(NSUInteger)item animated:(BOOL)animated notifyDelegateAndScrollToItem:(BOOL)notifyDelegateAndScrollToItem
 {
     [self setItem:item selected:YES];
     
@@ -369,22 +385,23 @@
                                       animated:animated
                                 scrollPosition:UICollectionViewScrollPositionNone];
     
-    [self scrollToItem:item animated:animated];
-    
-    if (notifySelection && [self.delegate respondsToSelector:@selector(pickerView:didSelectItem:)])
-        [self.delegate pickerView:self didSelectItem:item];
+    if(notifyDelegateAndScrollToItem) {
+        [self scrollToItem:item animated:animated];
+        if ([self.delegate respondsToSelector:@selector(pickerView:didSelectItem:)])
+            [self.delegate pickerView:self didSelectItem:item];
+    }
 }
 
-- (void)deselectItem:(NSUInteger)item animated:(BOOL)animated notifySelection:(BOOL)notifySelection
+- (void)deselectItem:(NSUInteger)item animated:(BOOL)animated notifyDelegateAndScrollToItem:(BOOL)notifyDelegateAndScrollToItem
 {
     [self setItem:item selected:NO];
-    
     [self.collectionView deselectItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:0] animated:animated];
     
-    [self scrollToItem:item animated:animated];
-    
-    if (notifySelection && [self.delegate respondsToSelector:@selector(pickerView:didDeselectItem:)])
-        [self.delegate pickerView:self didDeselectItem:item];
+    if(notifyDelegateAndScrollToItem) {
+        [self scrollToItem:item animated:animated];
+        if ([self.delegate respondsToSelector:@selector(pickerView:didDeselectItem:)])
+            [self.delegate pickerView:self didDeselectItem:item];
+    }
 }
 
 
